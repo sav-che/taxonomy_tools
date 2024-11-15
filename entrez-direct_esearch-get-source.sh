@@ -2,9 +2,9 @@
 
 # Installation and documentation for EDirect https://www.ncbi.nlm.nih.gov/books/NBK179288/
 
-# esearch -query is a regular GenBank search string, can be read from file or specified directly.
-# To (almost) stop query expansion (= strict search), use [WORD] field after each word. 
-# More info on fields: https://www.ncbi.nlm.nih.gov/books/NBK49540/.
+# esearch -query accepts a regular GenBank search string in quotation marks.
+# To (almost) stop query expansion (= strict search), use [WORD] field after each query word. 
+# More info on fields: https://www.ncbi.nlm.nih.gov/books/NBK49540/
 
 # QUERY FAILURE message is normal and indicates that not all items were found.
 # ERROR: Missing -query argument or Missing -db argument likely indicate that query is too long. 
