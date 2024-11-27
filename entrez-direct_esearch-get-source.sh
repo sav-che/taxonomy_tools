@@ -16,8 +16,9 @@ ENTREZ_RESULT="/mnt/c/Users/cereb/Desktop/genbank_records.tsv"
 # Search GenBank through EDirect
 esearch -db nuccore -query "$ENTREZ_QUERY" | \
 efetch -format gbc | \
-xtract -head accession keyword organism type_material specimen_voucher isolate isolation_source tissue_type culture_collection geo_loc_name collection_date collected_by identified_by note marker other-seqids\
-    -pattern INSDSeq -def "-" -sep "|" -element INSDSeq_primary-accession INSDKeyword \
+sed s/\&#xa\;/" "/ | \
+xtract -head accession comment keyword organism type_material specimen_voucher isolate isolation_source tissue_type culture_collection geo_loc_name collection_date collected_by identified_by note marker other-seqids\
+    -pattern INSDSeq -def "-" -sep "|" -element INSDSeq_primary-accession INSDSeq_comment INSDKeyword \
     -group INSDFeature -if INSDFeature_key -equals source -pfx "\n" \
         -block INSDQualifier -if INSDQualifier_name -equals organism -element INSDQualifier_value \
         -block INSDFeature -unless INSDQualifier_name -equals organism -lbl "\-" \
