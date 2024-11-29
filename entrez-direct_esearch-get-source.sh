@@ -17,7 +17,7 @@ ENTREZ_RESULT="/mnt/c/Users/cereb/Desktop/genbank_records.tsv"
 esearch -db nuccore -query "$ENTREZ_QUERY" | \
 efetch -format gbc | \
 sed s/\&#xa\;/" "/ | \
-xtract -head accession comment keyword organism type_material specimen_voucher isolate isolation_source tissue_type culture_collection strain geo_loc_name lat_lon altitude collection_date collected_by identified_by note marker other-seqids\
+xtract -head accession comment keyword organism type_material specimen_voucher isolate isolation_source clone bio_material tissue_type culture_collection strain geo_loc_name lat_lon altitude collection_date collected_by identified_by note marker other-seqids\
     -pattern INSDSeq -def "-" -sep "|" -element INSDSeq_primary-accession INSDSeq_comment INSDKeyword \
     -group INSDFeature -if INSDFeature_key -equals source -pfx "\n" \
         -block INSDQualifier -if INSDQualifier_name -equals organism -element INSDQualifier_value \
@@ -30,6 +30,10 @@ xtract -head accession comment keyword organism type_material specimen_voucher i
         -block INSDFeature -unless INSDQualifier_name -equals isolate -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals isolation_source -element INSDQualifier_value \
         -block INSDFeature -unless INSDQualifier_name -equals isolation_source -lbl "\-" \
+        -block INSDQualifier -if INSDQualifier_name -equals clone -element INSDQualifier_value \
+        -block INSDFeature -unless INSDQualifier_name -equals clone -lbl "\-" \
+        -block INSDQualifier -if INSDQualifier_name -equals bio_material -element INSDQualifier_value \
+        -block INSDFeature -unless INSDQualifier_name -equals bio_material -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals tissue_type -element INSDQualifier_value \
         -block INSDFeature -unless INSDQualifier_name -equals tissue_type -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals culture_collection -element INSDQualifier_value \
