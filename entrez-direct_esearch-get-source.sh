@@ -5,13 +5,16 @@
 # esearch -query accepts a regular GenBank search string in quotation marks.
 # To (almost) stop query expansion (= strict search), use [WORD] field after each query word. 
 # More info on fields: https://www.ncbi.nlm.nih.gov/books/NBK49540/
+# Example query (=contents of genbank_query.txt): (holotype[WORD] OR neotype[WORD]) AND ((Cerinomyces borealis[ORGN]) OR (Tremella torta[ORGN]))
+
+# INSDSeq_comment added because RefSeq sequences store accession ID of origin sequence in this field and nowhere else.
 
 # QUERY FAILURE message is normal and indicates that not all items were found.
 # ERROR: Missing -query argument or Missing -db argument likely indicate that query is too long. 
 
 # Specify input and output files
-ENTREZ_QUERY=$(cat < "/mnt/c/Users/cereb/Desktop/test.txt")
-ENTREZ_RESULT="/mnt/c/Users/cereb/Desktop/genbank_records.tsv"
+ENTREZ_QUERY=$(cat < "/path/to/input/genbank_query.txt")
+ENTREZ_RESULT="/path/to/output/genbank_records.tsv"
 
 # Search GenBank through EDirect
 esearch -db nuccore -query "$ENTREZ_QUERY" | \
@@ -72,4 +75,3 @@ xtract -head accession comment keyword organism type_material specimen_voucher i
         -block INSDFeature -unless INSDQualifier_name -equals product -deq " / " -sfx " " -lbl "\-" \
     -group INSDSeq_other-seqids -sep "|" -element INSDSeqid \
 > "$ENTREZ_RESULT"
-
