@@ -17,7 +17,7 @@ ENTREZ_RESULT="/mnt/c/Users/cereb/Desktop/genbank_records.tsv"
 esearch -db nuccore -query "$ENTREZ_QUERY" | \
 efetch -format gbc | \
 sed s/\&#xa\;/" "/ | \
-xtract -head accession comment keyword organism type_material specimen_voucher isolate isolation_source tissue_type culture_collection geo_loc_name collection_date collected_by identified_by note marker other-seqids\
+xtract -head accession comment keyword organism type_material specimen_voucher isolate isolation_source tissue_type culture_collection strain geo_loc_name lat_lon altitude collection_date collected_by identified_by note marker other-seqids\
     -pattern INSDSeq -def "-" -sep "|" -element INSDSeq_primary-accession INSDSeq_comment INSDKeyword \
     -group INSDFeature -if INSDFeature_key -equals source -pfx "\n" \
         -block INSDQualifier -if INSDQualifier_name -equals organism -element INSDQualifier_value \
@@ -34,8 +34,14 @@ xtract -head accession comment keyword organism type_material specimen_voucher i
         -block INSDFeature -unless INSDQualifier_name -equals tissue_type -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals culture_collection -element INSDQualifier_value \
         -block INSDFeature -unless INSDQualifier_name -equals culture_collection -lbl "\-" \
+        -block INSDQualifier -if INSDQualifier_name -equals strain -element INSDQualifier_value \
+        -block INSDFeature -unless INSDQualifier_name -equals strain -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals geo_loc_name -element INSDQualifier_value \
         -block INSDFeature -unless INSDQualifier_name -equals geo_loc_name -lbl "\-" \
+        -block INSDQualifier -if INSDQualifier_name -equals lat_lon -element INSDQualifier_value \
+        -block INSDFeature -unless INSDQualifier_name -equals lat_lon -lbl "\-" \
+        -block INSDQualifier -if INSDQualifier_name -equals altitude -element INSDQualifier_value \
+        -block INSDFeature -unless INSDQualifier_name -equals altitude -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals collection_date -element INSDQualifier_value \
         -block INSDFeature -unless INSDQualifier_name -equals collection_date -lbl "\-" \
         -block INSDQualifier -if INSDQualifier_name -equals collected_by -element INSDQualifier_value \
